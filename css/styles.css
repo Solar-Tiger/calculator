@@ -4,15 +4,35 @@
   box-sizing: border-box;
 }
 
+.calc-display {
+  border: 2px solid black;
+  width: 300px;
+  text-align: right;
+}
+
+.calc-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 350px;
+  height: 400px;
+  border: 2px solid black;
+  margin: 20px auto;
+}
+
 .calc-btn-container {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
   width: 300px;
-  height: 150px;
+  height: 300px;
   border: 2px solid black;
 }
 
 .calc-btn {
-  width: calc(100% / 4);
-  height: calc(100% / 2);
+  width: calc(100% / 6);
+  height: calc(100% / 12);
 }
