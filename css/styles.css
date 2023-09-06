@@ -1,0 +1,18 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.calc-btn-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 300px;
+  height: 150px;
+  border: 2px solid black;
+}
+
+.calc-btn {
+  width: calc(100% / 4);
+  height: calc(100% / 2);
+}
