@@ -25,13 +25,17 @@ operatorButtons.forEach((button) => button.classList.add('operator-btn'));
 const firstInput = [];
 const secondInput = [];
 
-const isANumber = (number) => parseInt(number) <= 9;
+const isButtonValid = (number) => {
+  if (parseInt(number) <= 9 || (number === '.' && !firstInput.includes('.'))) {
+    return number;
+  }
+};
 
 const calcDisplay = document.querySelector('.calc-display');
 
 calcButtons.forEach((calcButton) => {
   calcButton.addEventListener('click', () => {
-    if (isANumber(calcButton.textContent)) {
+    if (isButtonValid(calcButton.textContent)) {
       firstInput.push(calcButton.textContent);
       calcDisplay.textContent = firstInput.join('');
     }
