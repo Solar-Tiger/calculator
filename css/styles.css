@@ -56,13 +56,13 @@
 }
 
 .calc-btn {
-  width: calc(100% / 4);
-  height: calc(100% / 8);
+  width: calc(100% / 3.5);
+  height: calc(100% / 7);
   border-radius: 15%;
 }
 
 .operator-btn {
-  width: calc(100% / 3);
-  height: calc(100% / 8);
+  width: calc(100% / 2.5);
+  height: calc(100% / 7);
   border-radius: 15%;
 }
