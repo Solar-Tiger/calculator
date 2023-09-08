@@ -42,15 +42,6 @@ const calcInputs = {
 
 const calcDisplay = document.querySelector('.calc-display');
 
-// calcButtons.forEach((calcButton) => {
-//   calcButton.addEventListener('click', () => {
-//     if (isButtonValid(calcButton.textContent)) {
-//       firstInput.push(calcButton.textContent);
-//       calcDisplay.textContent = firstInput.join('');
-//     }
-//   });
-// });
-
 calcButtons.forEach((calcButton, index) => {
   calcButton.addEventListener('click', () => {
     const buttonIndex = calcInputs[index];
