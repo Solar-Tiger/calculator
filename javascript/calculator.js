@@ -18,12 +18,19 @@ operatorButtons.forEach((button) => button.classList.add('operator-btn'));
 
 // ---------------------------------------------------------------------------
 //
-//                          INPUT LOGIC FOR NUMBERS
+//                          INPUT LOGIC FOR BUTTONS
 //
 // ---------------------------------------------------------------------------
 
 const firstInput = [];
 const secondInput = [];
+let operatorInput = '';
+
+const calcDisplay = document.querySelector('.calc-display');
+
+// -------------------------------------
+//          INPUTS FOR NUMBERS
+// -------------------------------------
 
 const calcInputs = {
   9: 1,
@@ -40,15 +47,17 @@ const calcInputs = {
   14: '.',
 };
 
-const calcDisplay = document.querySelector('.calc-display');
-
 calcButtons.forEach((calcButton, index) => {
   calcButton.addEventListener('click', () => {
     const buttonIndex = calcInputs[index];
+
     // eslint-disable-next-line no-use-before-define
-    if (isInputValid(buttonIndex)) {
+    if (isInputValid(buttonIndex) && operatorInput === '') {
       firstInput.push(buttonIndex);
       calcDisplay.textContent = firstInput.join('');
+    } else if (isInputValid(buttonIndex)) {
+      secondInput.push(buttonIndex);
+      calcDisplay.textContent = secondInput.join('');
     }
   });
 });
@@ -60,3 +69,30 @@ const isInputValid = (number) => {
 
   return false;
 };
+
+// -------------------------------------
+//          INPUTS FOR OPERATORS
+// -------------------------------------
+
+const operatorInputs = {
+  0: '?',
+  1: '/',
+  2: 'root',
+  3: 'X',
+  4: '%',
+  5: '-',
+  6: '+/-',
+  7: '+',
+  8: 'C',
+  9: '=',
+};
+
+operatorButtons.forEach((operatorButton, index) => {
+  operatorButton.addEventListener('click', () => {
+    const operatorIndex = operatorInputs[index];
+
+    operatorInput = operatorIndex;
+
+    console.log(operatorIndex);
+  });
+});
