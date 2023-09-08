@@ -83,8 +83,6 @@ const operatorInputs = {
   5: '-',
   6: '+/-',
   7: '+',
-  8: 'C',
-  9: '=',
 };
 
 operatorButtons.forEach((operatorButton, index) => {
