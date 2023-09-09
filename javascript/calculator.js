@@ -100,7 +100,7 @@ const operatorInputs = {
 
 operatorButtons.forEach((operatorButton, index) => {
   operatorButton.addEventListener('click', () => {
-    if (index <= 7) {
+    if (index <= 7 && firstInput.length > 0) {
       operatorInput = operatorInputs[index];
     } else if (index === 8) {
       clearCalculator();
@@ -156,4 +156,17 @@ function multiplyInputs(num1, num2) {
 
 function divideInputs(num1, num2) {
   return num1 / num2;
+}
+
+// ---------------------------------------------------------------------------
+//
+//                  FUNCTIONS FOR CLEARING THE CALCULATOR
+//
+// ---------------------------------------------------------------------------
+
+function clearCalculator() {
+  firstInput = [];
+  secondInput = [];
+  operatorInput = '';
+  calcDisplay.textContent = 0;
 }
