@@ -111,19 +111,19 @@ operatorButtons.forEach((operatorButton, index) => {
       clearCalculator();
     } else if (index === 8) {
       clearLastInput(firstInput.length - 1, secondInput.length - 1);
-    } else if (secondInput.length > 0 && index === 9) {
+    } else if (
+      (secondInput.length > 0 && index === 9) ||
+      (firstInput.length > 0 && secondInput.length > 0)
+    ) {
       calculateInputs(
         operatorInput,
         Number(firstInput.join('')),
         Number(secondInput.join(''))
       );
-    } else if (firstInput.length > 0 && secondInput.length > 0) {
-      calculateInputs(
-        operatorInput,
-        Number(firstInput.join('')),
-        Number(secondInput.join(''))
-      );
-      operatorInput = operatorInputs[index];
+
+      if (index !== 9) {
+        operatorInput = operatorInputs[index];
+      }
     } else if (firstInput.length > 0 && operatorInput !== '') {
       operatorInput = operatorInputs[index];
     }
