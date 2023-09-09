@@ -178,13 +178,19 @@ function clearLastInput(clearInputOne, clearInputTwo) {
   if (firstInput.length > 0 && operatorInput === '') {
     firstInput.splice(clearInputOne, 1);
     calcDisplay.textContent = firstInput.join('');
+    displayZero();
   } else if (secondInput.length > 0) {
     secondInput.splice(clearInputTwo, 1);
     calcDisplay.textContent = secondInput.join('');
+    displayZero();
+  }
+}
 
-    if (!(secondInput.length > 0)) {
-      calcDisplay.textContent = 0;
-    }
+function displayZero() {
+  if (!(firstInput.length > 0) && operatorInput === '') {
+    calcDisplay.textContent = 0;
+  } else if (!(secondInput.length > 0) && operatorInput !== '') {
+    calcDisplay.textContent = 0;
   }
 }
 
