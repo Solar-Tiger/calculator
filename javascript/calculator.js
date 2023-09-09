@@ -116,10 +116,8 @@ operatorButtons.forEach((operatorButton, index) => {
 // ---------------------------------------------------------------------------
 
 function calculateInputs() {
-  const calcInputOne = parseInt(firstInput.join(''));
-  const calcInputTwo = parseInt(secondInput.join(''));
-
-  console.log(calcInputOne, calcInputTwo);
+  const calcInputOne = Number(firstInput.join(''));
+  const calcInputTwo = Number(secondInput.join(''));
 
   switch (operatorInput) {
     case '+':
