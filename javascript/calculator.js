@@ -115,7 +115,7 @@ operatorButtons.forEach((operatorButton, index) => {
       (secondInput.length > 0 && index === 9) ||
       (firstInput.length > 0 && secondInput.length > 0)
     ) {
-      calculateInputs(
+      calcDisplay.textContent = calculateInputs(
         operatorInput,
         Number(firstInput.join('')),
         Number(secondInput.join(''))
@@ -124,6 +124,9 @@ operatorButtons.forEach((operatorButton, index) => {
       if (index !== 9) {
         operatorInput = operatorInputs[index];
       }
+
+      firstInput = [Number(calcDisplay.textContent)];
+      secondInput = [];
     } else if (firstInput.length > 0 && operatorInput !== '') {
       operatorInput = operatorInputs[index];
     }
@@ -139,24 +142,20 @@ operatorButtons.forEach((operatorButton, index) => {
 function calculateInputs(operator, inputOne, inputTwo) {
   switch (operator) {
     case '+':
-      calcDisplay.textContent = addInputs(inputOne, inputTwo);
-      break;
-    case '-':
-      calcDisplay.textContent = subtractInputs(inputOne, inputTwo);
-      break;
-    case 'X':
-      calcDisplay.textContent = multiplyInputs(inputOne, inputTwo);
-      break;
-    case '/':
-      calcDisplay.textContent = divideInputs(inputOne, inputTwo);
-      break;
-    default:
-      console.log('No operator');
-      return;
-  }
+      return addInputs(inputOne, inputTwo);
 
-  firstInput = [Number(calcDisplay.textContent)];
-  secondInput = [];
+    case '-':
+      return subtractInputs(inputOne, inputTwo);
+
+    case 'X':
+      return multiplyInputs(inputOne, inputTwo);
+
+    case '/':
+      return divideInputs(inputOne, inputTwo).toFixed(6);
+
+    default:
+      return console.log('No operator');
+  }
 }
 
 function addInputs(num1, num2) {
