@@ -88,21 +88,21 @@ const isInputValid = (number) => {
 // -------------------------------------
 
 const operatorInputs = {
-  0: '?',
+  0: 'root',
   1: '/',
-  2: 'root',
+  2: '%',
   3: 'X',
-  4: '%',
+  4: '+/-',
   5: '-',
-  6: '+/-',
+  6: 'AC',
   7: '+',
 };
 
 operatorButtons.forEach((operatorButton, index) => {
   operatorButton.addEventListener('click', () => {
-    if (index <= 7 && firstInput.length > 0) {
+    if (index <= 7 && firstInput.length > 0 && index !== 6) {
       operatorInput = operatorInputs[index];
-    } else if (index === 8) {
+    } else if (index === 6) {
       clearCalculator();
     } else if (secondInput.length > 0) {
       calculateInputs();
