@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 // ---------------------------------------------------------------------------
 //
 //         APPLIES THE CLASSES TO THE HTML TO KEEP IT LESS CLUTTERED
@@ -22,8 +23,8 @@ operatorButtons.forEach((button) => button.classList.add('operator-btn'));
 //
 // ---------------------------------------------------------------------------
 
-const firstInput = [];
-const secondInput = [];
+let firstInput = [];
+let secondInput = [];
 let operatorInput = '';
 
 const calcDisplay = document.querySelector('.calc-display');
@@ -103,7 +104,7 @@ operatorButtons.forEach((operatorButton, index) => {
       operatorInput = operatorInputs[index];
     } else if (index === 8) {
       clearCalculator();
-    } else {
+    } else if (secondInput.length > 0) {
       calculateInputs();
     }
   });
@@ -126,9 +127,19 @@ function calculateInputs() {
     case '-':
       calcDisplay.textContent = subtractInputs(calcInputOne, calcInputTwo);
       break;
+    case 'X':
+      calcDisplay.textContent = multiplyInputs(calcInputOne, calcInputTwo);
+      break;
+    case '/':
+      calcDisplay.textContent = divideInputs(calcInputOne, calcInputTwo);
+      break;
     default:
       console.log('No operator');
   }
+
+  firstInput = [];
+  secondInput = [];
+  operatorInput = '';
 }
 
 function addInputs(num1, num2) {
@@ -137,4 +148,12 @@ function addInputs(num1, num2) {
 
 function subtractInputs(num1, num2) {
   return num1 - num2;
+}
+
+function multiplyInputs(num1, num2) {
+  return num1 * num2;
+}
+
+function divideInputs(num1, num2) {
+  return num1 / num2;
 }
