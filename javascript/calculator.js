@@ -100,18 +100,32 @@ const operatorInputs = {
 
 operatorButtons.forEach((operatorButton, index) => {
   operatorButton.addEventListener('click', () => {
-    if (index <= 7 && firstInput.length > 0 && index !== 6) {
+    if (
+      index <= 7 &&
+      firstInput.length > 0 &&
+      index !== 6 &&
+      operatorInput === ''
+    ) {
       operatorInput = operatorInputs[index];
     } else if (index === 6) {
       clearCalculator();
     } else if (index === 8) {
       clearLastInput(firstInput.length - 1, secondInput.length - 1);
-    } else if (secondInput.length > 0) {
+    } else if (secondInput.length > 0 && index === 9) {
       calculateInputs(
         operatorInput,
         Number(firstInput.join('')),
         Number(secondInput.join(''))
       );
+    } else if (firstInput.length > 0 && secondInput.length > 0) {
+      calculateInputs(
+        operatorInput,
+        Number(firstInput.join('')),
+        Number(secondInput.join(''))
+      );
+      operatorInput = operatorInputs[index];
+    } else if (firstInput.length > 0 && operatorInput !== '') {
+      operatorInput = operatorInputs[index];
     }
   });
 });
