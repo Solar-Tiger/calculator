@@ -133,7 +133,12 @@ operatorButtons.forEach((operatorButton, index) => {
 
       firstInput = [Number(calcDisplay.textContent)];
       secondInput = [];
-    } else if (firstInput.length > 0 && operatorInput !== '' && index !== 0) {
+    } else if (
+      firstInput.length > 0 &&
+      operatorInput !== '' &&
+      index !== 0 &&
+      index !== 9
+    ) {
       operatorInput = operatorInputs[index];
     }
   });
