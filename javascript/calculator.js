@@ -107,7 +107,11 @@ operatorButtons.forEach((operatorButton, index) => {
     } else if (index === 8) {
       clearLastInput();
     } else if (secondInput.length > 0) {
-      calculateInputs();
+      calculateInputs(
+        operatorInput,
+        Number(firstInput.join('')),
+        Number(secondInput.join(''))
+      );
     }
   });
 });
@@ -118,22 +122,19 @@ operatorButtons.forEach((operatorButton, index) => {
 //
 // ---------------------------------------------------------------------------
 
-function calculateInputs() {
-  const calcInputOne = Number(firstInput.join(''));
-  const calcInputTwo = Number(secondInput.join(''));
-
-  switch (operatorInput) {
+function calculateInputs(operator, inputOne, inputTwo) {
+  switch (operator) {
     case '+':
-      calcDisplay.textContent = addInputs(calcInputOne, calcInputTwo);
+      calcDisplay.textContent = addInputs(inputOne, inputTwo);
       break;
     case '-':
-      calcDisplay.textContent = subtractInputs(calcInputOne, calcInputTwo);
+      calcDisplay.textContent = subtractInputs(inputOne, inputTwo);
       break;
     case 'X':
-      calcDisplay.textContent = multiplyInputs(calcInputOne, calcInputTwo);
+      calcDisplay.textContent = multiplyInputs(inputOne, inputTwo);
       break;
     case '/':
-      calcDisplay.textContent = divideInputs(calcInputOne, calcInputTwo);
+      calcDisplay.textContent = divideInputs(inputOne, inputTwo);
       break;
     default:
       console.log('No operator');
