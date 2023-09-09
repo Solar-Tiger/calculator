@@ -55,6 +55,8 @@ calcButtons.forEach((calcButton, index) => {
     if (isInputValid(buttonIndex) && operatorInput === '') {
       firstInput.push(buttonIndex);
       calcDisplay.textContent = firstInput.join('');
+
+      // eslint-disable-next-line no-use-before-define
     } else if (isInputValid(buttonIndex)) {
       secondInput.push(buttonIndex);
       calcDisplay.textContent = secondInput.join('');
@@ -63,7 +65,17 @@ calcButtons.forEach((calcButton, index) => {
 });
 
 const isInputValid = (number) => {
-  if (number <= 9 || (number === '.' && !firstInput.includes('.'))) {
+  if (
+    number <= 9 ||
+    (number === '.' && !firstInput.includes('.') && operatorInput === '')
+  ) {
+    return number;
+  }
+
+  if (
+    number <= 9 ||
+    (number === '.' && !secondInput.includes('.') && operatorInput !== '')
+  ) {
     return number;
   }
 
@@ -87,10 +99,44 @@ const operatorInputs = {
 
 operatorButtons.forEach((operatorButton, index) => {
   operatorButton.addEventListener('click', () => {
-    const operatorIndex = operatorInputs[index];
-
-    operatorInput = operatorIndex;
-
-    console.log(operatorIndex);
+    if (index <= 7) {
+      operatorInput = operatorInputs[index];
+    } else if (index === 8) {
+      clearCalculator();
+    } else {
+      calculateInputs();
+    }
   });
 });
+
+// ---------------------------------------------------------------------------
+//
+//                  FUNCTIONS FOR SOLVING EACH OPERATOR INPUT
+//
+// ---------------------------------------------------------------------------
+
+function calculateInputs() {
+  const calcInputOne = parseInt(firstInput.join(''));
+  const calcInputTwo = parseInt(secondInput.join(''));
+
+  console.log(calcInputOne, calcInputTwo);
+
+  switch (operatorInput) {
+    case '+':
+      calcDisplay.textContent = addInputs(calcInputOne, calcInputTwo);
+      break;
+    case '-':
+      calcDisplay.textContent = subtractInputs(calcInputOne, calcInputTwo);
+      break;
+    default:
+      console.log('No operator');
+  }
+}
+
+function addInputs(num1, num2) {
+  return num1 + num2;
+}
+
+function subtractInputs(num1, num2) {
+  return num1 - num2;
+}
