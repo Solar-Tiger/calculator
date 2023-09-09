@@ -104,6 +104,7 @@ operatorButtons.forEach((operatorButton, index) => {
       index <= 7 &&
       firstInput.length > 0 &&
       index !== 6 &&
+      index !== 0 &&
       operatorInput === ''
     ) {
       operatorInput = operatorInputs[index];
@@ -127,8 +128,18 @@ operatorButtons.forEach((operatorButton, index) => {
 
       firstInput = [Number(calcDisplay.textContent)];
       secondInput = [];
-    } else if (firstInput.length > 0 && operatorInput !== '') {
+    } else if (firstInput.length > 0 && operatorInput !== '' && index !== 0) {
       operatorInput = operatorInputs[index];
+    } else if (firstInput.length > 0 && secondInput.length < 1 && index === 0) {
+      operatorInput = operatorInputs[index];
+
+      calcDisplay.textContent = calculateInputs(
+        operatorInput,
+        Number(firstInput.join(''))
+      );
+
+      firstInput = [Number(calcDisplay.textContent)];
+      secondInput = [];
     }
   });
 });
@@ -142,16 +153,25 @@ operatorButtons.forEach((operatorButton, index) => {
 function calculateInputs(operator, inputOne, inputTwo) {
   switch (operator) {
     case '+':
-      return addInputs(inputOne, inputTwo).toFixed(2);
+      return Number(addInputs(inputOne, inputTwo).toFixed(2));
 
     case '-':
-      return subtractInputs(inputOne, inputTwo).toFixed(2);
+      return Number(subtractInputs(inputOne, inputTwo).toFixed(2));
 
     case 'X':
-      return multiplyInputs(inputOne, inputTwo).toFixed(2);
+      return Number(multiplyInputs(inputOne, inputTwo).toFixed(2));
 
     case '/':
-      return divideInputs(inputOne, inputTwo).toFixed(2);
+      return Number(divideInputs(inputOne, inputTwo).toFixed(2));
+
+    case 'root':
+      if (isNaN(Number(squareRootInputs(inputOne).toFixed(7)))) {
+        return 'ERROR';
+      }
+      return Number(squareRootInputs(inputOne).toFixed(7));
+
+    case '%':
+      return Number(percentageInputs(inputOne, inputTwo).toFixed(7));
 
     default:
       return console.log('No operator');
@@ -172,6 +192,14 @@ function multiplyInputs(num1, num2) {
 
 function divideInputs(num1, num2) {
   return num1 / num2;
+}
+
+function squareRootInputs(num1) {
+  return Math.sqrt(num1);
+}
+
+function percentageInputs(num1, num2) {
+  return (num1 / 100) * num2;
 }
 
 // ---------------------------------------------------------------------------
