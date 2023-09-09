@@ -142,16 +142,16 @@ operatorButtons.forEach((operatorButton, index) => {
 function calculateInputs(operator, inputOne, inputTwo) {
   switch (operator) {
     case '+':
-      return addInputs(inputOne, inputTwo);
+      return addInputs(inputOne, inputTwo).toFixed(2);
 
     case '-':
-      return subtractInputs(inputOne, inputTwo);
+      return subtractInputs(inputOne, inputTwo).toFixed(2);
 
     case 'X':
-      return multiplyInputs(inputOne, inputTwo);
+      return multiplyInputs(inputOne, inputTwo).toFixed(2);
 
     case '/':
-      return divideInputs(inputOne, inputTwo).toFixed(6);
+      return divideInputs(inputOne, inputTwo).toFixed(2);
 
     default:
       return console.log('No operator');
