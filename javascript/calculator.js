@@ -105,7 +105,7 @@ operatorButtons.forEach((operatorButton, index) => {
     } else if (index === 6) {
       clearCalculator();
     } else if (index === 8) {
-      clearLastInput();
+      clearLastInput(firstInput.length - 1, secondInput.length - 1);
     } else if (secondInput.length > 0) {
       calculateInputs(
         operatorInput,
@@ -174,15 +174,12 @@ function clearCalculator() {
   calcDisplay.textContent = 0;
 }
 
-function clearLastInput() {
-  const firstInputStart = firstInput.length - 1;
-  const secondInputStart = secondInput.length - 1;
-
+function clearLastInput(clearInputOne, clearInputTwo) {
   if (firstInput.length > 0 && operatorInput === '') {
-    firstInput.splice(firstInputStart, 1);
+    firstInput.splice(clearInputOne, 1);
     calcDisplay.textContent = firstInput.join('');
   } else if (secondInput.length > 0) {
-    secondInput.splice(secondInputStart, 1);
+    secondInput.splice(clearInputTwo, 1);
     calcDisplay.textContent = secondInput.join('');
 
     if (!(secondInput.length > 0)) {
