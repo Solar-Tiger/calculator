@@ -25,6 +25,7 @@ operatorButtons.forEach((button) => button.classList.add('operator-btn'));
 
 let firstInput = [];
 let secondInput = [];
+let totalInput = 0;
 let operatorInput = '';
 
 const calcDisplay = document.querySelector('.calc-display');
@@ -137,9 +138,7 @@ function calculateInputs() {
       console.log('No operator');
   }
 
-  firstInput = [];
-  secondInput = [];
-  operatorInput = '';
+  totalInput = Number(calcDisplay.textContent);
 }
 
 function addInputs(num1, num2) {
@@ -167,6 +166,7 @@ function divideInputs(num1, num2) {
 function clearCalculator() {
   firstInput = [];
   secondInput = [];
+  totalInput = 0;
   operatorInput = '';
   calcDisplay.textContent = 0;
 }
