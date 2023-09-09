@@ -114,8 +114,13 @@ operatorButtons.forEach((operatorButton, index) => {
       clearLastInput(firstInput.length - 1, secondInput.length - 1);
     } else if (
       (secondInput.length > 0 && index === 9) ||
-      (firstInput.length > 0 && secondInput.length > 0)
+      (firstInput.length > 0 && secondInput.length > 0) ||
+      (firstInput.length > 0 && secondInput.length < 1 && index === 0)
     ) {
+      if (index === 0) {
+        operatorInput = operatorInputs[index];
+      }
+
       calcDisplay.textContent = calculateInputs(
         operatorInput,
         Number(firstInput.join('')),
@@ -130,16 +135,6 @@ operatorButtons.forEach((operatorButton, index) => {
       secondInput = [];
     } else if (firstInput.length > 0 && operatorInput !== '' && index !== 0) {
       operatorInput = operatorInputs[index];
-    } else if (firstInput.length > 0 && secondInput.length < 1 && index === 0) {
-      operatorInput = operatorInputs[index];
-
-      calcDisplay.textContent = calculateInputs(
-        operatorInput,
-        Number(firstInput.join(''))
-      );
-
-      firstInput = [Number(calcDisplay.textContent)];
-      secondInput = [];
     }
   });
 });
