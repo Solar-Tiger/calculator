@@ -50,6 +50,16 @@ const calcInputs = {
 
 calcButtons.forEach((calcButton, index) => {
   calcButton.addEventListener('click', () => {
+    if (
+      (firstInput.length >= 12 && operatorInput === '') ||
+      secondInput.length >= 12 ||
+      calcDisplay.textContent === 'ERROR'
+    ) {
+      calcDisplay.textContent = 'ERROR';
+
+      return 0;
+    }
+
     const buttonIndex = calcInputs[index];
 
     // eslint-disable-next-line no-use-before-define
@@ -100,6 +110,14 @@ const operatorInputs = {
 
 operatorButtons.forEach((operatorButton, index) => {
   operatorButton.addEventListener('click', () => {
+    if (calcDisplay.textContent === 'ERROR') {
+      if (index === 6) {
+        clearCalculator();
+      }
+
+      return 0;
+    }
+
     if (
       index <= 7 &&
       firstInput.length > 0 &&
@@ -133,6 +151,10 @@ operatorButtons.forEach((operatorButton, index) => {
 
       firstInput = [Number(calcDisplay.textContent)];
       secondInput = [];
+
+      if (firstInput.toString().split('').length > 12) {
+        calcDisplay.textContent = 'ERROR';
+      }
     } else if (
       firstInput.length > 0 &&
       operatorInput !== '' &&
@@ -204,7 +226,7 @@ function percentageInputs(num1, num2) {
 
 // ---------------------------------------------------------------------------
 //
-//                  FUNCTIONS FOR CLEARING THE CALCULATOR
+//               FUNCTIONS FOR CLEARING THE CALCULATOR AND ERRORS
 //
 // ---------------------------------------------------------------------------
 
