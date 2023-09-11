@@ -114,42 +114,12 @@ operatorButtons.forEach((operatorButton, index) => {
       return 0;
     }
 
-    if (index >= 4 && index <= 7 && firstInput.length > 0) {
-      operatorInput = operatorInputs[index];
-    }
+    clearLastInput(firstInput.length - 1, secondInput.length - 1, index);
+
+    continuedOperations(index);
 
     operate(index);
 
-    // if (
-    //   index <= 7 &&
-    //   firstInput.length > 0 &&
-    //   index !== 6 &&
-    //   index !== 0 &&
-    //   operatorInput === ""
-    // ) {
-    //   operatorInput = operatorInputs[index];
-    // } else if (index === 6) {
-    //   clearCalculator();
-    // } else if (index === 8) {
-    //   clearLastInput(firstInput.length - 1, secondInput.length - 1);
-    // } else if (
-    //   (secondInput.length > 0 && index === 9) ||
-    //   (firstInput.length > 0 && secondInput.length > 0) ||
-    //   (firstInput.length > 0 && secondInput.length < 1 && index === 0)
-    // ) {
-    //   if (index === 0) {
-    //     operatorInput = operatorInputs[index];
-    //   }
-    //   calcDisplay.textContent = calculateInputs(
-    //     operatorInput,
-    //     Number(firstInput.join("")),
-    //     Number(secondInput.join(""))
-    //   );
-    //   if (index !== 9) {
-    //     operatorInput = operatorInputs[index];
-    //   }
-    //   firstInput = [Number(calcDisplay.textContent)];
-    //   secondInput = [];
     //   if (firstInput.toString().split("").length > 12) {
     //     calcDisplay.textContent = "ERROR";
     //   }
@@ -172,13 +142,46 @@ function operate(currentIndex) {
     calcDisplay.textContent !== 'ERROR'
   ) {
     calcDisplay.textContent = calculateInputs(
-      operatorInput,
       Number(firstInput.join('')),
-      Number(secondInput.join(''))
+      Number(secondInput.join('')),
+      operatorInput
     );
 
     firstInput = [Number(calcDisplay.textContent)];
     secondInput = [];
+
+    handleError(firstInput);
+  }
+}
+
+function continuedOperations(numberIndex) {
+  if (
+    numberIndex >= 4 &&
+    numberIndex <= 7 &&
+    firstInput.length > 0 &&
+    operatorInput === ''
+  ) {
+    operatorInput = operatorInputs[numberIndex];
+  } else if (
+    numberIndex >= 4 &&
+    numberIndex <= 7 &&
+    operatorInput !== '' &&
+    secondInput.length > 0
+  ) {
+    calcDisplay.textContent = calculateInputs(
+      Number(firstInput.join('')),
+      Number(secondInput.join('')),
+      operatorInput
+    );
+
+    firstInput = [Number(calcDisplay.textContent)];
+    secondInput = [];
+
+    handleError(firstInput);
+  }
+
+  if (numberIndex >= 4 && numberIndex <= 7 && firstInput.length > 0) {
+    operatorInput = operatorInputs[numberIndex];
   }
 }
 // ---------------------------------------------------------------------------
@@ -186,8 +189,7 @@ function operate(currentIndex) {
 //                  FUNCTIONS FOR SOLVING EACH OPERATOR INPUT
 //
 // ---------------------------------------------------------------------------
-
-function calculateInputs(operator, inputOne, inputTwo) {
+function calculateInputs(inputOne, inputTwo, operator) {
   switch (operator) {
     case '+':
       return Number(addInputs(inputOne, inputTwo).toFixed(2));
@@ -254,12 +256,12 @@ function clearCalculator(acIndex) {
   }
 }
 
-function clearLastInput(clearInputOne, clearInputTwo) {
-  if (firstInput.length > 0 && operatorInput === '') {
+function clearLastInput(clearInputOne, clearInputTwo, clearIndex) {
+  if (firstInput.length > 0 && operatorInput === '' && clearIndex === 9) {
     firstInput.splice(clearInputOne, 1);
     calcDisplay.textContent = firstInput.join('');
     displayZero();
-  } else if (secondInput.length > 0) {
+  } else if (secondInput.length > 0 && clearIndex === 9) {
     secondInput.splice(clearInputTwo, 1);
     calcDisplay.textContent = secondInput.join('');
     displayZero();
@@ -271,6 +273,12 @@ function displayZero() {
     calcDisplay.textContent = 0;
   } else if (!(secondInput.length > 0) && operatorInput !== '') {
     calcDisplay.textContent = 0;
+  }
+}
+
+function handleError(totalOver12) {
+  if (totalOver12.toString().split('').length > 12) {
+    calcDisplay.textContent = 'ERROR';
   }
 }
 
