@@ -46,6 +46,12 @@
   /* border: 2px solid black; */
 }
 
+.calc-btn-container > button {
+  width: calc(100% / 3.5);
+  height: calc(100% / 7);
+  border-radius: 15%;
+}
+
 .calc-btn-container-two {
   display: flex;
   flex-wrap: wrap;
@@ -57,13 +63,7 @@
   /* border: 2px solid black; */
 }
 
-.calc-btn {
-  width: calc(100% / 3.5);
-  height: calc(100% / 7);
-  border-radius: 15%;
-}
-
-.operator-btn {
+.calc-btn-container-two > button {
   width: calc(100% / 2.5);
   height: calc(100% / 7);
   border-radius: 15%;
