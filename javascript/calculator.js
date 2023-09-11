@@ -108,28 +108,18 @@ const operatorInputs = {
 
 operatorButtons.forEach((operatorButton, index) => {
   operatorButton.addEventListener('click', () => {
+    if (index === 1 || calcDisplay.textContent === 'ERROR') {
+      clearCalculator(index);
+
+      return 0;
+    }
+
     if (index >= 4 && index <= 7 && firstInput.length > 0) {
       operatorInput = operatorInputs[index];
     }
 
-    if (index === 1) {
-      clearCalculator();
-    }
+    operate(index);
 
-    if (index === 8) {
-      calcDisplay.textContent = calculateInputs(
-        operatorInput,
-        Number(firstInput.join('')),
-        Number(secondInput.join(''))
-      );
-    }
-
-    // if (calcDisplay.textContent === "ERROR") {
-    //   if (index === 6) {
-    //     clearCalculator();
-    //   }
-    //   return 0;
-    // }
     // if (
     //   index <= 7 &&
     //   firstInput.length > 0 &&
@@ -174,6 +164,23 @@ operatorButtons.forEach((operatorButton, index) => {
   });
 });
 
+function operate(currentIndex) {
+  if (
+    currentIndex === 8 &&
+    firstInput.length > 0 &&
+    secondInput.length > 0 &&
+    calcDisplay.textContent !== 'ERROR'
+  ) {
+    calcDisplay.textContent = calculateInputs(
+      operatorInput,
+      Number(firstInput.join('')),
+      Number(secondInput.join(''))
+    );
+
+    firstInput = [Number(calcDisplay.textContent)];
+    secondInput = [];
+  }
+}
 // ---------------------------------------------------------------------------
 //
 //                  FUNCTIONS FOR SOLVING EACH OPERATOR INPUT
@@ -238,11 +245,13 @@ function percentageInputs(num1, num2) {
 //
 // ---------------------------------------------------------------------------
 
-function clearCalculator() {
-  firstInput = [];
-  secondInput = [];
-  operatorInput = '';
-  calcDisplay.textContent = 0;
+function clearCalculator(acIndex) {
+  if (acIndex === 1) {
+    firstInput = [];
+    secondInput = [];
+    operatorInput = '';
+    calcDisplay.textContent = 0;
+  }
 }
 
 function clearLastInput(clearInputOne, clearInputTwo) {
