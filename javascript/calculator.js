@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const */
 // ---------------------------------------------------------------------------
 //
-//         APPLIES THE CLASSES TO THE HTML TO KEEP IT LESS CLUTTERED
+//            GETS THE BUTTONS AND CONVERTS THEM TO AN ARRAY
 //
 // ---------------------------------------------------------------------------
 
@@ -12,10 +12,6 @@ const calcButtonContainerTwo = document.querySelector(
 
 const calcButtons = Array.from(calcButtonContainer.children);
 const operatorButtons = Array.from(calcButtonContainerTwo.children);
-
-calcButtons.forEach((button) => button.classList.add('calc-btn'));
-
-operatorButtons.forEach((button) => button.classList.add('operator-btn'));
 
 // ---------------------------------------------------------------------------
 //
@@ -99,70 +95,82 @@ const isInputValid = (number) => {
 
 const operatorInputs = {
   0: 'root',
-  1: '/',
+  1: 'AC',
   2: '%',
-  3: 'X',
-  4: '+/-',
-  5: '-',
-  6: 'AC',
-  7: '+',
+  3: '+/-',
+  4: 'X',
+  5: '/',
+  6: '+',
+  7: '-',
+  8: '=',
+  9: 'C',
 };
 
 operatorButtons.forEach((operatorButton, index) => {
   operatorButton.addEventListener('click', () => {
-    if (calcDisplay.textContent === 'ERROR') {
-      if (index === 6) {
-        clearCalculator();
-      }
-
-      return 0;
+    if (index >= 4 && index <= 7 && firstInput.length > 0) {
+      operatorInput = operatorInputs[index];
     }
 
-    if (
-      index <= 7 &&
-      firstInput.length > 0 &&
-      index !== 6 &&
-      index !== 0 &&
-      operatorInput === ''
-    ) {
-      operatorInput = operatorInputs[index];
-    } else if (index === 6) {
+    if (index === 1) {
       clearCalculator();
-    } else if (index === 8) {
-      clearLastInput(firstInput.length - 1, secondInput.length - 1);
-    } else if (
-      (secondInput.length > 0 && index === 9) ||
-      (firstInput.length > 0 && secondInput.length > 0) ||
-      (firstInput.length > 0 && secondInput.length < 1 && index === 0)
-    ) {
-      if (index === 0) {
-        operatorInput = operatorInputs[index];
-      }
+    }
 
+    if (index === 8) {
       calcDisplay.textContent = calculateInputs(
         operatorInput,
         Number(firstInput.join('')),
         Number(secondInput.join(''))
       );
-
-      if (index !== 9) {
-        operatorInput = operatorInputs[index];
-      }
-
-      firstInput = [Number(calcDisplay.textContent)];
-      secondInput = [];
-
-      if (firstInput.toString().split('').length > 12) {
-        calcDisplay.textContent = 'ERROR';
-      }
-    } else if (
-      firstInput.length > 0 &&
-      operatorInput !== '' &&
-      index !== 0 &&
-      index !== 9
-    ) {
-      operatorInput = operatorInputs[index];
     }
+
+    // if (calcDisplay.textContent === "ERROR") {
+    //   if (index === 6) {
+    //     clearCalculator();
+    //   }
+    //   return 0;
+    // }
+    // if (
+    //   index <= 7 &&
+    //   firstInput.length > 0 &&
+    //   index !== 6 &&
+    //   index !== 0 &&
+    //   operatorInput === ""
+    // ) {
+    //   operatorInput = operatorInputs[index];
+    // } else if (index === 6) {
+    //   clearCalculator();
+    // } else if (index === 8) {
+    //   clearLastInput(firstInput.length - 1, secondInput.length - 1);
+    // } else if (
+    //   (secondInput.length > 0 && index === 9) ||
+    //   (firstInput.length > 0 && secondInput.length > 0) ||
+    //   (firstInput.length > 0 && secondInput.length < 1 && index === 0)
+    // ) {
+    //   if (index === 0) {
+    //     operatorInput = operatorInputs[index];
+    //   }
+    //   calcDisplay.textContent = calculateInputs(
+    //     operatorInput,
+    //     Number(firstInput.join("")),
+    //     Number(secondInput.join(""))
+    //   );
+    //   if (index !== 9) {
+    //     operatorInput = operatorInputs[index];
+    //   }
+    //   firstInput = [Number(calcDisplay.textContent)];
+    //   secondInput = [];
+    //   if (firstInput.toString().split("").length > 12) {
+    //     calcDisplay.textContent = "ERROR";
+    //   }
+    // } else if (
+    //   firstInput.length > 0 &&
+    //   operatorInput !== "" &&
+    //   index !== 0 &&
+    //   index !== 9
+    // ) {
+    //   operatorInput = operatorInputs[index];
+    // }
   });
 });
 
