@@ -52,7 +52,6 @@ calcButtons.forEach((calcButton, index) => {
       calcDisplay.textContent === 'ERROR'
     ) {
       calcDisplay.textContent = 'ERROR';
-
       return 0;
     }
 
@@ -62,7 +61,6 @@ calcButtons.forEach((calcButton, index) => {
     if (isInputValid(buttonIndex) && operatorInput === '') {
       firstInput.push(buttonIndex);
       calcDisplay.textContent = firstInput.join('');
-
       // eslint-disable-next-line no-use-before-define
     } else if (isInputValid(buttonIndex)) {
       secondInput.push(buttonIndex);
@@ -120,17 +118,7 @@ operatorButtons.forEach((operatorButton, index) => {
 
     operate(index);
 
-    //   if (firstInput.toString().split("").length > 12) {
-    //     calcDisplay.textContent = "ERROR";
-    //   }
-    // } else if (
-    //   firstInput.length > 0 &&
-    //   operatorInput !== "" &&
-    //   index !== 0 &&
-    //   index !== 9
-    // ) {
-    //   operatorInput = operatorInputs[index];
-    // }
+    specialOperations(index);
   });
 });
 
@@ -159,7 +147,7 @@ function continuedOperations(numberIndex) {
     numberIndex >= 4 &&
     numberIndex <= 7 &&
     firstInput.length > 0 &&
-    operatorInput === ''
+    secondInput.length <= 0
   ) {
     operatorInput = operatorInputs[numberIndex];
   } else if (
@@ -179,16 +167,53 @@ function continuedOperations(numberIndex) {
 
     handleError(firstInput);
   }
-
-  if (numberIndex >= 4 && numberIndex <= 7 && firstInput.length > 0) {
-    operatorInput = operatorInputs[numberIndex];
-  }
 }
+
+function specialOperations(specialIndex) {
+  // Handles square root
+  if (specialIndex === 0 && secondInput.length === 0 && firstInput.length > 0) {
+    operatorInput = operatorInputs[specialIndex];
+
+    calcDisplay.textContent = calculateInputs(
+      Number(firstInput.join('')),
+      Number(secondInput.join('')),
+      operatorInput
+    );
+
+    firstInput = [Number(calcDisplay.textContent)].toString().split('');
+
+    operatorInput = '';
+  }
+
+  // Handles positive or negative number
+  else if (specialIndex === 3 && firstInput.length > 0) {
+    let otherOperator = operatorInput;
+    operatorInput = operatorInputs[specialIndex];
+
+    calcDisplay.textContent = calculateInputs(
+      Number(firstInput.join('')),
+      Number(secondInput.join('')),
+      operatorInput
+    );
+
+    if (secondInput.length === 0) {
+      firstInput = [Number(calcDisplay.textContent)];
+    } else if (secondInput.length > 0 && firstInput.length > 0) {
+      secondInput = [Number(calcDisplay.textContent)];
+    }
+
+    operatorInput = otherOperator;
+  }
+
+  handleError(firstInput);
+}
+
 // ---------------------------------------------------------------------------
 //
 //                  FUNCTIONS FOR SOLVING EACH OPERATOR INPUT
 //
 // ---------------------------------------------------------------------------
+
 function calculateInputs(inputOne, inputTwo, operator) {
   switch (operator) {
     case '+':
@@ -201,16 +226,20 @@ function calculateInputs(inputOne, inputTwo, operator) {
       return Number(multiplyInputs(inputOne, inputTwo).toFixed(2));
 
     case '/':
-      return Number(divideInputs(inputOne, inputTwo).toFixed(2));
+      return Number(divideInputs(inputOne, inputTwo).toFixed(7));
 
     case 'root':
-      if (isNaN(Number(squareRootInputs(inputOne).toFixed(7)))) {
+      if (isNaN(Number(squareRootInput(inputOne).toFixed(7)))) {
         return 'ERROR';
       }
-      return Number(squareRootInputs(inputOne).toFixed(7));
+
+      return Number(squareRootInput(inputOne).toFixed(7));
 
     case '%':
       return Number(percentageInputs(inputOne, inputTwo).toFixed(7));
+
+    case '+/-':
+      return Number(positiveOrNegative(inputOne, inputTwo));
 
     default:
       return console.log('No operator');
@@ -233,12 +262,22 @@ function divideInputs(num1, num2) {
   return num1 / num2;
 }
 
-function squareRootInputs(num1) {
+function squareRootInput(num1) {
   return Math.sqrt(num1);
 }
 
 function percentageInputs(num1, num2) {
   return (num1 / 100) * num2;
+}
+
+function positiveOrNegative(num1, num2) {
+  if (firstInput.length > 0 && secondInput.length === 0) {
+    return num1 * -1;
+  }
+  if (secondInput.length > 0 && firstInput.length > 0) {
+    return num2 * -1;
+  }
+  return 0;
 }
 
 // ---------------------------------------------------------------------------
@@ -277,7 +316,10 @@ function displayZero() {
 }
 
 function handleError(totalOver12) {
-  if (totalOver12.toString().split('').length > 12) {
+  if (
+    totalOver12.toString().split(',').length > 12 ||
+    calcDisplay.textContent === 'Infinity'
+  ) {
     calcDisplay.textContent = 'ERROR';
   }
 }
