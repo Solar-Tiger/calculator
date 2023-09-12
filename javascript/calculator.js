@@ -171,22 +171,10 @@ function continuedOperations(numberIndex) {
 
 function specialOperations(specialIndex) {
   // Handles square root
-  if (specialIndex === 0 && secondInput.length === 0 && firstInput.length > 0) {
-    operatorInput = operatorInputs[specialIndex];
-
-    calcDisplay.textContent = calculateInputs(
-      Number(firstInput.join('')),
-      Number(secondInput.join('')),
-      operatorInput
-    );
-
-    firstInput = [Number(calcDisplay.textContent)].toString().split('');
-
-    operatorInput = '';
-  }
-
-  // Handles positive or negative number
-  else if (specialIndex === 3 && firstInput.length > 0) {
+  if (
+    (specialIndex === 0 && secondInput.length === 0 && firstInput.length > 0) ||
+    (specialIndex === 3 && firstInput.length > 0)
+  ) {
     let otherOperator = operatorInput;
     operatorInput = operatorInputs[specialIndex];
 
@@ -196,10 +184,20 @@ function specialOperations(specialIndex) {
       operatorInput
     );
 
-    if (secondInput.length === 0) {
+    // Handles positive or negative number
+    if (secondInput.length === 0 && specialIndex === 3) {
       firstInput = [Number(calcDisplay.textContent)];
-    } else if (secondInput.length > 0 && firstInput.length > 0) {
+    } else if (
+      secondInput.length > 0 &&
+      firstInput.length > 0 &&
+      specialIndex === 3
+    ) {
       secondInput = [Number(calcDisplay.textContent)];
+    }
+
+    // Handles square root
+    else if (specialIndex === 0) {
+      firstInput = [Number(calcDisplay.textContent)].toString().split('');
     }
 
     operatorInput = otherOperator;
