@@ -144,15 +144,13 @@ function operate(currentIndex) {
 
 function continuedOperations(numberIndex) {
   if (
-    numberIndex >= 4 &&
-    numberIndex <= 7 &&
+    ((numberIndex >= 4 && numberIndex <= 7) || numberIndex === 2) &&
     firstInput.length > 0 &&
     secondInput.length <= 0
   ) {
     operatorInput = operatorInputs[numberIndex];
   } else if (
-    numberIndex >= 4 &&
-    numberIndex <= 7 &&
+    ((numberIndex >= 4 && numberIndex <= 7) || numberIndex === 2) &&
     operatorInput !== '' &&
     secondInput.length > 0
   ) {
@@ -162,6 +160,7 @@ function continuedOperations(numberIndex) {
       operatorInput
     );
 
+    operatorInput = operatorInputs[numberIndex];
     firstInput = [Number(calcDisplay.textContent)];
     secondInput = [];
 
@@ -170,7 +169,6 @@ function continuedOperations(numberIndex) {
 }
 
 function specialOperations(specialIndex) {
-  // Handles square root
   if (
     (specialIndex === 0 && secondInput.length === 0 && firstInput.length > 0) ||
     (specialIndex === 3 && firstInput.length > 0)
