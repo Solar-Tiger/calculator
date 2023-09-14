@@ -44,6 +44,35 @@ const calcInputs = {
   14: '.',
 };
 
+document.addEventListener('keydown', (e) => {
+  const numbers = document.querySelector(`.numbers[data-key="${e.key}"]`);
+
+  if (!numbers) return;
+
+  const number = numbers.textContent;
+
+  if (
+    (firstInput.length >= 12 && operatorInput === '') ||
+    secondInput.length >= 12 ||
+    calcDisplay.textContent === 'ERROR'
+  ) {
+    calcDisplay.textContent = 'ERROR';
+
+    return;
+  }
+  if (isInputValid(number) && operatorInput === '') {
+    firstInput.push(number);
+    calcDisplay.textContent = firstInput.join('');
+  } else if (isInputValid(number)) {
+    secondInput.push(number);
+    calcDisplay.textContent = secondInput.join('');
+  }
+
+  console.log(firstInput);
+  console.log(secondInput);
+  console.log(operatorInput);
+});
+
 calcButtons.forEach((calcButton, index) => {
   calcButton.addEventListener('click', () => {
     if (
@@ -71,14 +100,14 @@ calcButtons.forEach((calcButton, index) => {
 
 const isInputValid = (number) => {
   if (
-    number <= 9 ||
+    (number >= 0 && number <= 9) ||
     (number === '.' && !firstInput.includes('.') && operatorInput === '')
   ) {
     return number;
   }
 
   if (
-    number <= 9 ||
+    (number >= 0 && number <= 9) ||
     (number === '.' && !secondInput.includes('.') && operatorInput !== '')
   ) {
     return number;
@@ -109,7 +138,7 @@ operatorButtons.forEach((operatorButton, index) => {
     if (index === 1 || calcDisplay.textContent === 'ERROR') {
       clearCalculator(index);
 
-      return 0;
+      return;
     }
 
     clearLastInput(firstInput.length - 1, secondInput.length - 1, index);
@@ -174,6 +203,7 @@ function specialOperations(specialIndex) {
     (specialIndex === 3 && firstInput.length > 0)
   ) {
     let otherOperator = operatorInput;
+
     operatorInput = operatorInputs[specialIndex];
 
     calcDisplay.textContent = calculateInputs(
@@ -214,29 +244,21 @@ function calculateInputs(inputOne, inputTwo, operator) {
   switch (operator) {
     case '+':
       return Number(addInputs(inputOne, inputTwo).toFixed(2));
-
     case '-':
       return Number(subtractInputs(inputOne, inputTwo).toFixed(2));
-
     case 'X':
       return Number(multiplyInputs(inputOne, inputTwo).toFixed(2));
-
     case '/':
       return Number(divideInputs(inputOne, inputTwo).toFixed(7));
-
     case 'root':
       if (isNaN(Number(squareRootInput(inputOne).toFixed(7)))) {
         return 'ERROR';
       }
-
       return Number(squareRootInput(inputOne).toFixed(7));
-
     case '%':
       return Number(percentageInputs(inputOne, inputTwo).toFixed(7));
-
     case '+/-':
       return Number(positiveOrNegative(inputOne, inputTwo));
-
     default:
       return console.log('No operator');
   }
@@ -283,7 +305,7 @@ function positiveOrNegative(num1, num2) {
 // ---------------------------------------------------------------------------
 
 function clearCalculator(acIndex) {
-  if (acIndex === 1) {
+  if (acIndex === 1 || acIndex === 'AC') {
     firstInput = [];
     secondInput = [];
     operatorInput = '';
@@ -314,7 +336,8 @@ function displayZero() {
 function handleError(totalOver12) {
   if (
     totalOver12.toString().split(',').length > 12 ||
-    calcDisplay.textContent === 'Infinity'
+    calcDisplay.textContent === 'Infinity' ||
+    calcDisplay.textContent === 'NaN'
   ) {
     calcDisplay.textContent = 'ERROR';
   }
