@@ -133,6 +133,48 @@ const operatorInputs = {
   9: 'C',
 };
 
+document.addEventListener('keydown', (e) => {
+  const operators = document.querySelector(`.operators[data-key="${e.key}"]`);
+
+  if (!operators) return;
+
+  const operator = operators.textContent;
+
+  if (operator === 'AC' || calcDisplay.textContent === 'ERROR') {
+    clearCalculator(operator);
+
+    return;
+  }
+
+  if (
+    operator &&
+    operator !== '=' &&
+    firstInput.length > 0 &&
+    secondInput.length <= 0
+  ) {
+    operatorInput = operator;
+  } else if (operator && operatorInput !== '' && secondInput.length > 0) {
+    calcDisplay.textContent = calculateInputs(
+      Number(firstInput.join('')),
+      Number(secondInput.join('')),
+      operatorInput
+    );
+
+    if (operator !== '=') {
+      operatorInput = operator;
+    }
+
+    firstInput = [Number(calcDisplay.textContent)];
+    secondInput = [];
+
+    handleError(firstInput);
+  }
+
+  console.log(firstInput);
+  console.log(secondInput);
+  console.log(operatorInput);
+});
+
 operatorButtons.forEach((operatorButton, index) => {
   operatorButton.addEventListener('click', () => {
     if (index === 1 || calcDisplay.textContent === 'ERROR') {
