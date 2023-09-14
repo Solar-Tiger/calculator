@@ -138,15 +138,19 @@ document.addEventListener('keydown', (e) => {
 
   if (!operators) return;
 
-  const operator = operators.textContent;
+  const operator = operators.dataset.key;
 
-  if (operator === 'AC' || calcDisplay.textContent === 'ERROR') {
-    clearCalculator(operator);
+  if (operator === 'Escape' || calcDisplay.textContent === 'ERROR') {
+    clearCalculator();
 
     return;
   }
 
-  if (operator !== '=' && firstInput.length > 0 && secondInput.length <= 0) {
+  if (
+    operator !== 'Enter' &&
+    firstInput.length > 0 &&
+    secondInput.length <= 0
+  ) {
     operatorInput = operator;
   } else if (operator && operatorInput !== '' && secondInput.length > 0) {
     calcDisplay.textContent = calculateInputs(
@@ -155,7 +159,7 @@ document.addEventListener('keydown', (e) => {
       operatorInput
     );
 
-    if (operator !== '=') {
+    if (operator !== 'Enter') {
       operatorInput = operator;
     }
 
@@ -173,7 +177,7 @@ document.addEventListener('keydown', (e) => {
 operatorButtons.forEach((operatorButton, index) => {
   operatorButton.addEventListener('click', () => {
     if (index === 1 || calcDisplay.textContent === 'ERROR') {
-      clearCalculator(index);
+      clearCalculator();
 
       return;
     }
@@ -341,13 +345,11 @@ function positiveOrNegative(num1, num2) {
 //
 // ---------------------------------------------------------------------------
 
-function clearCalculator(acIndex) {
-  if (acIndex === 1 || acIndex === 'AC') {
-    firstInput = [];
-    secondInput = [];
-    operatorInput = '';
-    calcDisplay.textContent = 0;
-  }
+function clearCalculator() {
+  firstInput = [];
+  secondInput = [];
+  operatorInput = '';
+  calcDisplay.textContent = 0;
 }
 
 function clearLastInput(clearInputOne, clearInputTwo, clearIndex) {
