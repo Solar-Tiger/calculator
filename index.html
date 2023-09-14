@@ -10,45 +10,39 @@
 
 <body>
     <h1 class="calc-header">Calculator by Solar_Tiger</h1>
-
     <div class="calc-container">
-
         <h2 class="calc-display">0</h2>
-
         <div class="calc-buttons-container">
-
             <div class="calc-btn-container">
                 <button>MR</button>
                 <button>M+</button>
                 <button>M-</button>
-                <button>7</button>
-                <button>8</button>
-                <button>9</button>
-                <button>4</button>
-                <button>5</button>
-                <button>6</button>
-                <button>1</button>
-                <button>2</button>
-                <button>3</button>
-                <button>0</button>
+                <button data-key="7" class="numbers">7</button>
+                <button data-key="8" class="numbers">8</button>
+                <button data-key="9" class="numbers">9</button>
+                <button data-key="4" class="numbers">4</button>
+                <button data-key="5" class="numbers">5</button>
+                <button data-key="6" class="numbers">6</button>
+                <button data-key="1" class="numbers">1</button>
+                <button data-key="2" class="numbers">2</button>
+                <button data-key="3" class="numbers">3</button>
+                <button data-key="0" class="numbers">0</button>
                 <button>00</button>
-                <button>.</button>
+                <button data-key="." class="numbers">.</button>
             </div>
-
             <div class="calc-btn-container-two">
                 <button>&#10188;</button>
-                <button>AC</button>
+                <button data-key="Escape" class="operators">AC</button>
                 <button>%</button>
                 <button>+/-</button>
-                <button>X</button>
-                <button>&#247;</button>
-                <button>+</button>
-                <button>-</button>
-                <button>=</button>
+                <button data-key="*" class="operators">X</button>
+                <button data-key="/" class="operators">&#247;</button>
+                <button data-key="+" class="operators">+</button>
+                <button data-key="-" class="operators">-</button>
+                <button data-key="Enter" class="operators">=</button>
                 <button>C</button>
             </div>
         </div>
-
     </div>
     <script src="javascript/calculator.js"></script>
 </body>
