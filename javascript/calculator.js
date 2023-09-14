@@ -288,6 +288,7 @@ function calculateInputs(inputOne, inputTwo, operator) {
     case '-':
       return Number(subtractInputs(inputOne, inputTwo).toFixed(2));
     case 'X':
+    case '*':
       return Number(multiplyInputs(inputOne, inputTwo).toFixed(2));
     case '/':
       return Number(divideInputs(inputOne, inputTwo).toFixed(7));
