@@ -146,12 +146,7 @@ document.addEventListener('keydown', (e) => {
     return;
   }
 
-  if (
-    operator &&
-    operator !== '=' &&
-    firstInput.length > 0 &&
-    secondInput.length <= 0
-  ) {
+  if (operator !== '=' && firstInput.length > 0 && secondInput.length <= 0) {
     operatorInput = operator;
   } else if (operator && operatorInput !== '' && secondInput.length > 0) {
     calcDisplay.textContent = calculateInputs(
