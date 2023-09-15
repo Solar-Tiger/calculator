@@ -2,7 +2,7 @@
 
 ## This Calculator will:
 
-### Do basic operations:
+### Perform basic operations:
 
 - Add
 - Subtract
