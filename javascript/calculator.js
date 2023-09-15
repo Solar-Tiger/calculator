@@ -60,9 +60,13 @@ document.addEventListener('keydown', (e) => {
 
     return;
   }
+
+  // eslint-disable-next-line no-use-before-define
   if (isInputValid(number) && operatorInput === '') {
     firstInput.push(number);
     calcDisplay.textContent = firstInput.join('');
+
+    // eslint-disable-next-line no-use-before-define
   } else if (isInputValid(number)) {
     secondInput.push(number);
     calcDisplay.textContent = secondInput.join('');
@@ -81,7 +85,8 @@ calcButtons.forEach((calcButton, index) => {
       calcDisplay.textContent === 'ERROR'
     ) {
       calcDisplay.textContent = 'ERROR';
-      return 0;
+
+      return;
     }
 
     const buttonIndex = calcInputs[index];
@@ -90,6 +95,7 @@ calcButtons.forEach((calcButton, index) => {
     if (isInputValid(buttonIndex) && operatorInput === '') {
       firstInput.push(buttonIndex);
       calcDisplay.textContent = firstInput.join('');
+
       // eslint-disable-next-line no-use-before-define
     } else if (isInputValid(buttonIndex)) {
       secondInput.push(buttonIndex);
@@ -141,25 +147,31 @@ document.addEventListener('keydown', (e) => {
   const operator = operators.dataset.key;
 
   if (operator === 'Escape' || calcDisplay.textContent === 'ERROR') {
-    clearCalculator();
-
+    clearCalculator(operator);
     return;
   }
 
+  clearLastInput(firstInput.length - 1, secondInput.length - 1, operator);
+
   if (
     operator !== 'Enter' &&
+    operator !== 'Backspace' &&
     firstInput.length > 0 &&
     secondInput.length <= 0
   ) {
     operatorInput = operator;
-  } else if (operator && operatorInput !== '' && secondInput.length > 0) {
+  } else if (
+    operator !== 'Backspace' &&
+    operatorInput !== '' &&
+    secondInput.length > 0
+  ) {
     calcDisplay.textContent = calculateInputs(
       Number(firstInput.join('')),
       Number(secondInput.join('')),
       operatorInput
     );
 
-    if (operator !== 'Enter') {
+    if (operator !== 'Enter' && operator !== 'Backspace') {
       operatorInput = operator;
     }
 
@@ -177,8 +189,7 @@ document.addEventListener('keydown', (e) => {
 operatorButtons.forEach((operatorButton, index) => {
   operatorButton.addEventListener('click', () => {
     if (index === 1 || calcDisplay.textContent === 'ERROR') {
-      clearCalculator();
-
+      clearCalculator(index);
       return;
     }
 
@@ -268,11 +279,12 @@ function specialOperations(specialIndex) {
     else if (specialIndex === 0) {
       firstInput = [Number(calcDisplay.textContent)].toString().split('');
     }
-
     operatorInput = otherOperator;
   }
 
-  handleError(firstInput);
+  if (specialIndex !== 0) {
+    handleError(firstInput);
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -346,19 +358,28 @@ function positiveOrNegative(num1, num2) {
 //
 // ---------------------------------------------------------------------------
 
-function clearCalculator() {
-  firstInput = [];
-  secondInput = [];
-  operatorInput = '';
-  calcDisplay.textContent = 0;
+function clearCalculator(acIndex) {
+  if (acIndex === 1 || acIndex === 'Escape') {
+    firstInput = [];
+    secondInput = [];
+    operatorInput = '';
+    calcDisplay.textContent = 0;
+  }
 }
 
 function clearLastInput(clearInputOne, clearInputTwo, clearIndex) {
-  if (firstInput.length > 0 && operatorInput === '' && clearIndex === 9) {
+  if (
+    firstInput.length > 0 &&
+    operatorInput === '' &&
+    (clearIndex === 9 || clearIndex === 'Backspace')
+  ) {
     firstInput.splice(clearInputOne, 1);
     calcDisplay.textContent = firstInput.join('');
     displayZero();
-  } else if (secondInput.length > 0 && clearIndex === 9) {
+  } else if (
+    secondInput.length > 0 &&
+    (clearIndex === 9 || clearIndex === 'Backspace')
+  ) {
     secondInput.splice(clearInputTwo, 1);
     calcDisplay.textContent = secondInput.join('');
     displayZero();
@@ -375,7 +396,8 @@ function displayZero() {
 
 function handleError(totalOver12) {
   if (
-    totalOver12.toString().split(',').length > 12 ||
+    // When using square root it treats it differently without a comma vs a comma
+    totalOver12.toString().split('').length > 12 ||
     calcDisplay.textContent === 'Infinity' ||
     calcDisplay.textContent === 'NaN'
   ) {
