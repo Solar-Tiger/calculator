@@ -275,11 +275,14 @@ function specialOperations(specialIndex) {
       secondInput = [Number(calcDisplay.textContent)];
     }
 
-    // Handles square root
-    else if (specialIndex === 0) {
-      firstInput = [Number(calcDisplay.textContent)].toString().split('');
-    }
     operatorInput = otherOperator;
+
+    // Handles square root
+    if (specialIndex === 0) {
+      firstInput = [Number(calcDisplay.textContent)];
+
+      operatorInput = '+';
+    }
   }
 
   if (specialIndex !== 0) {
