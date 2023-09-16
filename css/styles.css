@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+.calc-header {
+  text-align: center;
+}
+
 .calc-display {
   display: flex;
   justify-content: flex-end;
@@ -67,4 +71,21 @@
   width: calc(100% / 2.5);
   height: calc(100% / 7);
   border-radius: 15%;
+}
+
+.calc-buttons > button {
+  color: white;
+  font-size: 1.1rem;
+}
+
+.numbers {
+  background-color: #8f8f8f;
+}
+
+.operators {
+  background-color: rgb(30, 153, 153);
+}
+
+#all-clear {
+  background-color: rgb(139, 0, 0);
 }
