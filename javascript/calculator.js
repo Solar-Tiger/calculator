@@ -22,6 +22,7 @@ const operatorButtons = Array.from(calcButtonContainerTwo.children);
 let firstInput = [];
 let secondInput = [];
 let operatorInput = '';
+let invalidOperators;
 
 const calcDisplay = document.querySelector('.calc-display');
 
@@ -61,13 +62,15 @@ document.addEventListener('keydown', (e) => {
     return;
   }
 
+  checkInvalidOperators();
+
   // eslint-disable-next-line no-use-before-define
   if (isInputValid(number) && operatorInput === '') {
     firstInput.push(number);
     calcDisplay.textContent = firstInput.join('');
 
     // eslint-disable-next-line no-use-before-define
-  } else if (isInputValid(number)) {
+  } else if (isInputValid(number) && !invalidOperators) {
     secondInput.push(number);
     calcDisplay.textContent = secondInput.join('');
   }
@@ -89,6 +92,8 @@ calcButtons.forEach((calcButton, index) => {
       return;
     }
 
+    checkInvalidOperators();
+
     const buttonIndex = calcInputs[index];
 
     // eslint-disable-next-line no-use-before-define
@@ -97,7 +102,7 @@ calcButtons.forEach((calcButton, index) => {
       calcDisplay.textContent = firstInput.join('');
 
       // eslint-disable-next-line no-use-before-define
-    } else if (isInputValid(buttonIndex)) {
+    } else if (isInputValid(buttonIndex) && !invalidOperators) {
       secondInput.push(buttonIndex);
       calcDisplay.textContent = secondInput.join('');
     }
@@ -151,19 +156,23 @@ document.addEventListener('keydown', (e) => {
     return;
   }
 
+  checkInvalidOperators();
+
   clearLastInput(firstInput.length - 1, secondInput.length - 1, operator);
 
   if (
-    operator !== 'Enter' &&
-    operator !== 'Backspace' &&
-    firstInput.length > 0 &&
-    secondInput.length <= 0
+    (operator !== 'Enter' &&
+      operator !== 'Backspace' &&
+      firstInput.length > 0 &&
+      secondInput.length <= 0) ||
+    (invalidOperators && operator !== 'Enter' && operator !== 'Backspace')
   ) {
     operatorInput = operator;
   } else if (
     operator !== 'Backspace' &&
     operatorInput !== '' &&
-    secondInput.length > 0
+    secondInput.length > 0 &&
+    !invalidOperators
   ) {
     calcDisplay.textContent = calculateInputs(
       Number(firstInput.join('')),
@@ -193,6 +202,8 @@ operatorButtons.forEach((operatorButton, index) => {
       return;
     }
 
+    checkInvalidOperators();
+
     clearLastInput(firstInput.length - 1, secondInput.length - 1, index);
 
     continuedOperations(index);
@@ -208,7 +219,8 @@ function operate(currentIndex) {
     currentIndex === 8 &&
     firstInput.length > 0 &&
     secondInput.length > 0 &&
-    calcDisplay.textContent !== 'ERROR'
+    calcDisplay.textContent !== 'ERROR' &&
+    !invalidOperators
   ) {
     calcDisplay.textContent = calculateInputs(
       Number(firstInput.join('')),
@@ -232,8 +244,9 @@ function continuedOperations(numberIndex) {
     operatorInput = operatorInputs[numberIndex];
   } else if (
     ((numberIndex >= 4 && numberIndex <= 7) || numberIndex === 2) &&
+    secondInput.length > 0 &&
     operatorInput !== '' &&
-    secondInput.length > 0
+    !invalidOperators
   ) {
     calcDisplay.textContent = calculateInputs(
       Number(firstInput.join('')),
@@ -254,8 +267,6 @@ function specialOperations(specialIndex) {
     (specialIndex === 0 && secondInput.length === 0 && firstInput.length > 0) ||
     (specialIndex === 3 && firstInput.length > 0)
   ) {
-    let otherOperator = operatorInput;
-
     operatorInput = operatorInputs[specialIndex];
 
     calcDisplay.textContent = calculateInputs(
@@ -275,13 +286,9 @@ function specialOperations(specialIndex) {
       secondInput = [Number(calcDisplay.textContent)];
     }
 
-    operatorInput = otherOperator;
-
     // Handles square root
-    if (specialIndex === 0) {
+    else if (specialIndex === 0) {
       firstInput = [Number(calcDisplay.textContent)];
-
-      operatorInput = '+';
     }
   }
 
@@ -406,6 +413,10 @@ function handleError(totalOver12) {
   ) {
     calcDisplay.textContent = 'ERROR';
   }
+}
+
+function checkInvalidOperators() {
+  invalidOperators = ['root', '+/-'].includes(operatorInput);
 }
 
 document.addEventListener('click', () => {
