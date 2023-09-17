@@ -15,7 +15,7 @@ const operatorButtons = Array.from(calcButtonContainerTwo.children);
 
 // ---------------------------------------------------------------------------
 //
-//                          INPUT LOGIC FOR BUTTONS
+//                 INPUT LOGIC (KEYDOWN AND CLICK) FOR NUMBERS
 //
 // ---------------------------------------------------------------------------
 
@@ -25,10 +25,6 @@ let operatorInput = '';
 let invalidOperators;
 
 const calcDisplay = document.querySelector('.calc-display');
-
-// -------------------------------------
-//          INPUTS FOR NUMBERS
-// -------------------------------------
 
 const calcInputs = {
   9: 1,
@@ -45,6 +41,10 @@ const calcInputs = {
   14: '.',
 };
 
+// -------------------------------------
+//      KEYDOWN INPUTS FOR NUMBERS
+// -------------------------------------
+
 document.addEventListener('keydown', (e) => {
   const numbers = document.querySelector(`.numbers[data-key="${e.key}"]`);
 
@@ -52,15 +52,7 @@ document.addEventListener('keydown', (e) => {
 
   const number = numbers.textContent;
 
-  if (
-    (firstInput.length >= 12 && operatorInput === '') ||
-    secondInput.length >= 12 ||
-    calcDisplay.textContent === 'ERROR'
-  ) {
-    calcDisplay.textContent = 'ERROR';
-
-    return;
-  }
+  handleNumberError();
 
   checkInvalidOperators();
 
@@ -74,23 +66,15 @@ document.addEventListener('keydown', (e) => {
     secondInput.push(number);
     calcDisplay.textContent = secondInput.join('');
   }
-
-  console.log(firstInput);
-  console.log(secondInput);
-  console.log(operatorInput);
 });
+
+// -------------------------------------
+//        CLICK INPUTS FOR NUMBERS
+// -------------------------------------
 
 calcButtons.forEach((calcButton, index) => {
   calcButton.addEventListener('click', () => {
-    if (
-      (firstInput.length >= 12 && operatorInput === '') ||
-      secondInput.length >= 12 ||
-      calcDisplay.textContent === 'ERROR'
-    ) {
-      calcDisplay.textContent = 'ERROR';
-
-      return;
-    }
+    handleNumberError();
 
     checkInvalidOperators();
 
@@ -127,9 +111,11 @@ const isInputValid = (number) => {
   return false;
 };
 
-// -------------------------------------
-//          INPUTS FOR OPERATORS
-// -------------------------------------
+// ---------------------------------------------------------------------------
+//
+//                INPUT LOGIC (KEYDOWN AND CLICK) FOR OPERATORS
+//
+// ---------------------------------------------------------------------------
 
 const operatorInputs = {
   0: 'root',
@@ -143,6 +129,10 @@ const operatorInputs = {
   8: '=',
   9: 'C',
 };
+
+// -------------------------------------
+//      KEYDOWN INPUTS FOR OPERATORS
+// -------------------------------------
 
 document.addEventListener('keydown', (e) => {
   const operators = document.querySelector(`.operators[data-key="${e.key}"]`);
@@ -187,13 +177,13 @@ document.addEventListener('keydown', (e) => {
     firstInput = [Number(calcDisplay.textContent)];
     secondInput = [];
 
-    handleError(firstInput);
+    handleOperatorError(firstInput);
   }
-
-  console.log(firstInput);
-  console.log(secondInput);
-  console.log(operatorInput);
 });
+
+// -------------------------------------
+//      CLICK INPUTS FOR OPERATORS
+// -------------------------------------
 
 operatorButtons.forEach((operatorButton, index) => {
   operatorButton.addEventListener('click', () => {
@@ -231,7 +221,7 @@ function operate(currentIndex) {
     firstInput = [Number(calcDisplay.textContent)];
     secondInput = [];
 
-    handleError(firstInput);
+    handleOperatorError(firstInput);
   }
 }
 
@@ -258,7 +248,7 @@ function continuedOperations(numberIndex) {
     firstInput = [Number(calcDisplay.textContent)];
     secondInput = [];
 
-    handleError(firstInput);
+    handleOperatorError(firstInput);
   }
 }
 
@@ -275,7 +265,9 @@ function specialOperations(specialIndex) {
       operatorInput
     );
 
-    // Handles positive or negative number
+    //----------------------------------------------------
+    //   HANDLES POSITIVE OR NEGATIVE NUMBER CONVERSION
+    //----------------------------------------------------
     if (secondInput.length === 0 && specialIndex === 3) {
       firstInput = [Number(calcDisplay.textContent)];
     } else if (
@@ -286,14 +278,16 @@ function specialOperations(specialIndex) {
       secondInput = [Number(calcDisplay.textContent)];
     }
 
-    // Handles square root
+    //----------------------------------------------------
+    //                HANDLES SQUARE ROOT
+    //----------------------------------------------------
     else if (specialIndex === 0) {
       firstInput = [Number(calcDisplay.textContent)];
     }
   }
 
   if (specialIndex !== 0) {
-    handleError(firstInput);
+    handleOperatorError(firstInput);
   }
 }
 
@@ -364,7 +358,7 @@ function positiveOrNegative(num1, num2) {
 
 // ---------------------------------------------------------------------------
 //
-//               FUNCTIONS FOR CLEARING THE CALCULATOR AND ERRORS
+//          FUNCTIONS FOR CLEARING THE CALCULATOR AND HANDLING ERRORS
 //
 // ---------------------------------------------------------------------------
 
@@ -404,9 +398,8 @@ function displayZero() {
   }
 }
 
-function handleError(totalOver12) {
+function handleOperatorError(totalOver12) {
   if (
-    // When using square root it treats it differently without a comma vs a comma
     totalOver12.toString().split('').length > 12 ||
     calcDisplay.textContent === 'Infinity' ||
     calcDisplay.textContent === 'NaN'
@@ -415,12 +408,16 @@ function handleError(totalOver12) {
   }
 }
 
+function handleNumberError() {
+  if (
+    (firstInput.length >= 12 && operatorInput === '') ||
+    secondInput.length >= 12 ||
+    calcDisplay.textContent === 'ERROR'
+  ) {
+    calcDisplay.textContent = 'ERROR';
+  }
+}
+
 function checkInvalidOperators() {
   invalidOperators = ['root', '+/-'].includes(operatorInput);
 }
-
-document.addEventListener('click', () => {
-  console.log(firstInput);
-  console.log(secondInput);
-  console.log(operatorInput);
-});
